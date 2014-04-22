@@ -1,0 +1,29 @@
+.heading(style="padding-left:16px")
+  h2 Search For Parcels
+  span Counties:
+  input#county_select(type="hidden" value="Albany")  	
+#mapu_controls.controls 
+  p.controls__destination
+    input#destination.postcode(type='text', placeholder='Distance from Highway', data-event-handler='destinationKeyDown', data-event-name='keydown', disabled='', readonly='')
+    a#updateDestination.hidden(href='#', data-event-handler='updateDestination') →
+  p.controls__error.hidden
+    | Oops!
+    span#errorMessage
+    | Please try again.
+  .controls__slider
+    
+  span.controls__slider_value.travel_time(data-bound-variable='travel_time') 100
+  span.controls__slider_caption(style='margin-bottom:15px;padding-left:5px;color:#da6c86') Miles
+  .controls__slider_caption_mobile Miles
+
+  .controls__contact
+    p Your search has returned
+    .loading-indicator(style="display:none;margin-top:10px;")
+      .progress.progress-striped.active(style='margin-left:7px;margin-right:7px')
+        span.progress-bar.progress-bar-danger(style='width: 100%;')
+    p
+      .controls__slider_value.num_parcels
+    center parcels.
+
+ 
+  

@@ -1,0 +1,242 @@
+html(lang='en')
+head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width')
+    meta(name='mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title NY Sites
+    link(rel='stylesheet', href='linker/bootstrap-3.1.1/css/bootstrap.min.css')
+    link(rel='stylesheet', href='linker/font-awesome-4.0.3/css/font-awesome.min.css')
+    link(rel='stylesheet', href='linker/leaflet-0.7.2/leaflet.css')
+    link(rel='stylesheet', href='linker/leaflet-sidebar/L.Control.Sidebar.css')
+    link(rel='stylesheet', href='linker/css/main.css')
+    link(rel='stylesheet', href='linker/css/select2-bootstrap.css')
+    link(rel='stylesheet', href='linker/css/mapumental.css')
+    link(rel='apple-touch-icon', href='linker/img/favicon-152.png')
+    link(rel='shortcut icon', sizes='196x196', href='linker/img/favicon-196.png')
+    //
+       HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    //if lt IE 9
+      script(src='linker/js/html5shiv.js')
+      script(src='linker/js/respond.min.js')
+  body
+    .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .navbar-header
+        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='#') NY Sites
+      .navbar-collapse.collapse
+        form.navbar-form.navbar-right(role='search')
+          .form-group.has-feedback.navbar-right
+            input#searchbox.form-control(type='text', placeholder='Search')
+            span#searchicon.fa.fa-search.form-control-feedback
+        ul.nav.navbar-nav
+          li
+            a(href='#', data-toggle='collapse', data-target='.navbar-collapse.in', onclick='$(\'#aboutModal\').modal(\'show\'); return false;')
+              i.fa.fa-question-circle(style='color: white;')
+              | About
+          li.dropdown
+            a#toolsDrop.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+              i.fa.fa-globe(style='color: white;')
+              | Tools
+              b.caret
+            ul.dropdown-menu
+              li
+                a(href='#', data-toggle='collapse', data-target='.navbar-collapse.in', onclick='map.fitBounds(boroughs.getBounds()); return false;')
+                  i.fa.fa-arrows-alt
+                  | Zoom To Full Extent
+              li
+                a(href='#', data-toggle='collapse', data-target='.navbar-collapse.in', onclick='$(\'#legendModal\').modal(\'show\'); return false;')
+                  i.fa.fa-picture-o
+                  | Show Legend
+              li.divider.hidden-xs
+              li
+                a(href='#', data-toggle='collapse', data-target='.navbar-collapse.in', onclick='$(\'#loginModal\').modal(\'show\'); return false;')
+                  i.fa.fa-user
+                  | Login
+          li.dropdown
+            a#downloadDrop.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+              i.fa.fa-cloud-download(style='color: white;')
+              | Download
+              b.caret
+            ul.dropdown-menu
+              li
+                a(href='data/boroughs.geojson', download='boroughs.geojson', target='_blank', data-toggle='collapse', data-target='.navbar-collapse.in')
+                  i.fa.fa-download
+                  | Boroughs
+              li
+                a(href='data/subways.geojson', download='subways.geojson', target='_blank', data-toggle='collapse', data-target='.navbar-collapse.in')
+                  i.fa.fa-download
+                  | Subway Lines
+              li
+                a(href='data/DOITT_THEATER_01_13SEPT2010.geojson', download='theaters.geojson', target='_blank', data-toggle='collapse', data-target='.navbar-collapse.in')
+                  i.fa.fa-download
+                  | Theaters
+              li
+                a(href='data/DOITT_MUSEUM_01_13SEPT2010.geojson', download='museums.geojson', target='_blank', data-toggle='collapse', data-target='.navbar-collapse.in')
+                  i.fa.fa-download
+                  | Museums
+          li
+            a(href='#', data-toggle='collapse', data-target='.navbar-collapse.in', onclick='sidebar.toggle(); return false;')
+              i.fa.fa-list(style='color: white;')
+              | Sidebar
+      
+    #map
+    #sidebar
+      include includes/sidebar
+    //- #loading
+    //-   .loading-indicator
+    //-     .progress.progress-striped.active
+    //-       .progress-bar.progress-bar-info(style='width: 100%;')
+    #aboutModal.modal.fade(tabindex='-1', role='dialog')
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4.modal-title Welcome to the BootLeaf template!
+          .modal-body
+            ul#aboutTabs.nav.nav-tabs
+              li.active
+                a(href='#about', data-toggle='tab')
+                  i.fa.fa-question-circle
+                  | About the project
+              li
+                a(href='#contact', data-toggle='tab')
+                  i.fa.fa-envelope
+                  | Contact us
+              li
+                a(href='#disclaimer', data-toggle='tab')
+                  i.fa.fa-exclamation-circle
+                  | Disclaimer
+              li.dropdown
+                a.dropdown-toggle(href='#', data-toggle='dropdown')
+                  i.fa.fa-globe
+                  | Metadata
+                  b.caret
+                ul.dropdown-menu
+                  li
+                    a(href='#boroughs-tab', data-toggle='tab') Boroughs
+                  li
+                    a(href='#subway-lines-tab', data-toggle='tab') Subway Lines
+                  li
+                    a(href='#theaters-tab', data-toggle='tab') Theaters
+                  li
+                    a(href='#museums-tab', data-toggle='tab') Museums
+            #aboutTabsContent.tab-content(style='padding-top: 10px;')
+              #about.tab-pane.fade.active.in
+                p
+                  | A simple, responsive template for building web mapping applications with
+                  a(href='http://getbootstrap.com/') Bootstrap 3
+                  | ,
+                  a(href='http://leafletjs.com/', target='_blank') Leaflet
+                  | , and
+                  a(href='http://twitter.github.io/typeahead.js/', target='_blank') typeahead.js
+                  | . Open source, MIT licensed, and available on
+                  a(href='https://github.com/bmcbride/bootleaf', target='_blank') GitHub
+                  | .
+                .panel.panel-primary
+                  .panel-heading Features
+                  ul.list-group
+                    li.list-group-item
+                      | Fullscreen mobile-friendly map template with responsive navbar and modal placeholders
+                    li.list-group-item jQuery loading of external GeoJSON files
+                    li.list-group-item
+                      | Elegant client-side multi-layer feature search with autocomplete using
+                      a(href='http://twitter.github.io/typeahead.js/', target='_blank') typeahead.js
+                    li.list-group-item Integration of Bootstrap tables into Leaflet popups
+                    li.list-group-item
+                      | Logic for minimizing layer control and switching to modal popups on small screens
+                    li.list-group-item
+                      | Responsive sidebar functionality via the
+                      a(href='https://github.com/turbo87/leaflet-sidebar/', target='_blank') leaflet-sidebar
+                      | plugin
+                    li.list-group-item Marker icons included in layer control
+              #disclaimer.tab-pane.fade.text-danger
+                p The data provided on this site is for informational and planning purposes only.
+                p
+                  | Absolutely no accuracy or completeness guarantee is implied or intended. All information on this map is subject to such variations and corrections as might result from a complete title search and/or accurate field survey.
+              #contact.tab-pane.fade
+                form#contact-form
+                  .well.well-sm
+                    .row
+                      .col-md-4
+                        .form-group
+                          label(for='first-name') First Name:
+                          input#first-name.form-control(type='text')
+                        .form-group
+                          label(for='last-name') Last Name:
+                          input#last-email.form-control(type='text')
+                        .form-group
+                          label(for='email') Email:
+                          input#email.form-control(type='text')
+                      .col-md-8
+                        label(for='message') Message:
+                        textarea#message.form-control(rows='8')
+                      .col-md-12
+                        p
+                          button.btn.btn-primary.pull-right(type='submit', data-dismiss='modal') Submit
+              #boroughs-tab.tab-pane.fade
+                p
+                  | Borough data courtesy of
+                  a(href='http://www.nyc.gov/html/dcp/html/bytes/meta_dis_nyboroughwi.shtml', target='_blank') New York City Department of City Planning
+              #subway-lines-tab.tab-pane.fade
+                p
+                  a(href='http://spatialityblog.com/2010/07/08/mta-gis-data-update/#datalinks', target='_blank') MTA Subway data
+                  | courtesy of the
+                  a(href='http://www.urbanresearch.org/about/cur-components/cuny-mapping-service', target='_blank') CUNY Mapping Service at the Center for Urban Research
+              #theaters-tab.tab-pane.fade
+                p
+                  | Theater data courtesy of
+                  a(href='https://data.cityofnewyork.us/Recreation/Theaters/kdu2-865w', target='_blank') NYC Department of Information & Telecommunications (DoITT)
+              #museums-tab.tab-pane.fade
+                p
+                  | Museum data courtesy of
+                  a(href='https://data.cityofnewyork.us/Recreation/Museums-and-Galleries/sat5-adpb', target='_blank') NYC Department of Information & Telecommunications (DoITT)
+    #legendModal.modal.fade(tabindex='-1', role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4.modal-title Map Legend
+          .modal-body
+            p Map Legend goes here...
+    #loginModal.modal.fade(tabindex='-1', role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4.modal-title Login
+          .modal-body
+            form#contact-form
+              fieldset
+                .form-group
+                  label(for='name') Username:
+                  input#username.form-control(type='text')
+                .form-group
+                  label(for='email') Password:
+                  input#password.form-control(type='password')
+          .modal-footer
+            button.btn.btn-primary.pull-right(type='submit', data-dismiss='modal') Login
+    #featureModal.modal.fade(tabindex='-1', role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4#feature-title.modal-title.text-primary
+          #feature-info.modal-body
+    script(src='linker/js/jquery-1.11.0.min.js')
+    script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
+    script(src='linker/js/select2.min.js')
+    script(type='text/javascript', src="http://d3js.org/topojson.v1.min.js")
+    script(type='text/javascript', src="linker/js/d3.v3.min.js")
+    script(src='linker/bootstrap-3.1.1/js/bootstrap.min.js')
+    script(src='linker/typeahead/typeahead.bundle.min.js')
+    script(src='linker/leaflet-0.7.2/leaflet.js')
+    script(src='linker/js/d3-leafletLayer.js')
+    script(src='linker/leaflet-sidebar/L.Control.Sidebar.js')
+    script(src='linker/js/main.js')
